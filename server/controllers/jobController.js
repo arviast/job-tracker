@@ -11,4 +11,43 @@ const createJob = async (req, res) => {
   res.status(201).json(job);
 };
 
-module.exports = { getJobs, createJob };
+const updateJob = async (req, res) => {
+  const { id: jobId } = req.params;
+
+  const job = await Job.findOne({ _id: jobId });
+
+  if (!job) {
+    return res.status(404).json({ msg: "Job not found" });
+  }
+
+  if (job.createdBy.toString() !== req.user.userId) {
+    return res.status(403).json({ msg: "Not authorized to update this job" });
+  }
+
+  const updatedJob = await Job.findByIdAndUpdate(jobId, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json(updatedJob);
+};
+
+const deleteJob = async (req, res) => {
+  const { id: jobId } = req.params;
+
+  const job = await Job.findOne({ _id: jobId });
+
+  if (!job) {
+    return res.status(404).json({ msg: "Job not found" });
+  }
+
+  if (job.createdBy.toString() !== req.user.userId) {
+    return res.status(403).json({ msg: "Not authorized to delete this job" });
+  }
+
+  await job.deleteOne();
+
+  res.status(200).json({ msg: "Job deleted successfully" });
+};
+
+module.exports = { getJobs, createJob, updateJob, deleteJob };
