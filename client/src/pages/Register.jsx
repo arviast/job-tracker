@@ -13,33 +13,33 @@ export default function Register() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-    const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Registering:", formData);
 
     try {
-        const response = await fetch("http://localhost:5050/api/auth/register", {
+      const response = await fetch("http://localhost:5050/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
-        });
+      });
 
-        const data = await response.json();
+      const data = await response.json();
 
-        if (response.ok) {
-            // Save user and token
-            // localStorage.setItem("token", data.token);
-            // localStorage.setItem("user", JSON.stringify(data.user));
-            // Navigate to dashboard
-            navigate("/login");
-        } else {
+      if (response.ok) {
+        // Save user and token
+        // localStorage.setItem("token", data.token);
+        // localStorage.setItem("user", JSON.stringify(data.user));
+        // Navigate to dashboard
+        navigate("/login");
+      } else {
         console.error("Registration failed:", data.error || data.msg);
         // Optional: show toast or error message in UI
-        }
+      }
     } catch (err) {
-        console.error("Error during registration:", err);
+      console.error("Error during registration:", err);
     }
-    };
+  };
 
 
   return (
@@ -101,7 +101,7 @@ export default function Register() {
           <div className="text-center mt-4">
             <span className="text-sm text-gray-600">Already have an account? </span>
             <Link to="/login" className="text-blue-600 font-semibold hover:underline">
-                Log in
+              Log in
             </Link>
           </div>
         </form>

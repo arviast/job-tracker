@@ -93,16 +93,16 @@ export default function Dashboard() {
       <JobList jobs={jobs} onDelete={fetchJobs} onEdit={handleEdit} />
 
       {/* Create/Edit Job Modal */}
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <Modal isOpen={isModalOpen} onClose={closeModal} title={editingJob ? "Edit Job" : "Create Job"}>
         <CreateJob
+          job={editingJob}
           onJobCreated={() => {
             fetchJobs();
             closeModal();
           }}
-          editingJob={editingJob} // 👈 Pass job for edit, null for create
-          onClose={closeModal}
         />
       </Modal>
+
     </div>
   );
 }

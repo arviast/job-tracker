@@ -43,33 +43,32 @@ export default function JobList({ jobs, onDelete, onEdit }) {
             <div className="flex justify-between items-start">
               {/* Status Badge */}
               <span
-                className={`px-3 py-1 rounded-md text-sm font-semibold ${
-                  job.status === "pending"
+                className={`px-3 py-1 rounded-md text-sm font-semibold ${job.status === "pending"
                     ? "bg-yellow-100 text-yellow-800"
                     : job.status === "interview"
-                    ? "bg-blue-100 text-blue-800"
-                    : "bg-green-100 text-green-800"
-                }`}
+                      ? "bg-blue-100 text-blue-800"
+                      : "bg-green-100 text-green-800"
+                  }`}
               >
                 {job.status}
               </span>
               <div className="flex items-center space-x-2">
                 <button
-                    onClick={() => onEdit(job)}
-                    className="text-blue-600 hover:text-blue-800 text-lg"
-                    title="Edit job"
-                    >
-                    ✏️
+                  onClick={() => onEdit(job)}
+                  className="text-blue-600 hover:text-blue-800 text-lg"
+                  title="Edit job"
+                >
+                  ✏️
                 </button>
                 <button
-                    onClick={() => handleDelete(job._id)}
-                    className="text-red-600 text-xl hover:text-red-800"
-                    title="Delete Job"
+                  onClick={() => handleDelete(job._id)}
+                  className="text-red-600 text-xl hover:text-red-800"
+                  title="Delete Job"
                 >
-                    ❌
+                  ❌
                 </button>
               </div>
-              
+
             </div>
 
             <h2 className="text-xl font-bold text-gray-900 mt-2">

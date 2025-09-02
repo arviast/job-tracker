@@ -13,36 +13,36 @@ export default function Login() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        try {
-            const response = await fetch("http://localhost:5050/api/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-            });
+    try {
+      const response = await fetch("http://localhost:5050/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-            const data = await response.json();
+      const data = await response.json();
 
-            if (!response.ok) {
-            throw new Error(data.msg || "Login failed");
-            }
+      if (!response.ok) {
+        throw new Error(data.msg || "Login failed");
+      }
 
-            // Save token and user info (to localStorage or context)
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
-            console.log("Login success:", data);
+      // Save token and user info (to localStorage or context)
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      console.log("Login success:", data);
 
-            // Redirect or navigate to dashboard
-            navigate("/dashboard");
-        } catch (error) {
-            console.error("Login error:", error.message);
-            alert(error.message);
-        }
-    };
+      // Redirect or navigate to dashboard
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Login error:", error.message);
+      alert(error.message);
+    }
+  };
 
 
 

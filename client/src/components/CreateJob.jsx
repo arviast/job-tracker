@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function CreateJob({ onJobCreated }) {
+export default function CreateJob({ onJobCreated, job }) {
   const [formData, setFormData] = useState({
     position: "",
     company: "",
@@ -21,20 +21,28 @@ export default function CreateJob({ onJobCreated }) {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:5050/api/jobs", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
+      const isEditing = !!job;
+
+      const response = await fetch(
+        `http://localhost:5050/api/jobs${isEditing ? `/${job._id}` : ""}`,
+        {
+          method: isEditing ? "PUT" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(formData),
+        });
 
       const data = await response.json();
 
       if (!response.ok) throw new Error(data.msg || "Failed to create job");
+      if (isEditing) {
+        alert("Job updated successfully!");
+      } else {
+        alert("Job created successfully!");
+      }
 
-      alert("Job created successfully!");
       setFormData({
         position: "",
         company: "",
@@ -52,6 +60,17 @@ export default function CreateJob({ onJobCreated }) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (job) {
+      setFormData({
+        position: job.position || "",
+        company: job.company || "",
+        location: job.location || "",
+        status: job.status || "pending",
+      });
+    }
+  }, [job]);
 
   return (
     <form
