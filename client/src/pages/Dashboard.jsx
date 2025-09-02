@@ -10,9 +10,25 @@ export default function Dashboard() {
   const [jobs, setJobs] = useState([]);
   const [editingJob, setEditingJob] = useState(null); // 🆕 for edit tracking
 
+  const [filterStatus, setFilterStatus] = useState("all");
+
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
+
+  const filteredJobs =
+    filterStatus === "all"
+      ? jobs
+      : jobs.filter((job) => job.status === filterStatus);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 10;
+
+  const startIndex = (currentPage - 1) * jobsPerPage;
+  const endIndex = startIndex + jobsPerPage;
+
+  const paginatedJobs = filteredJobs.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
 
   // 🔄 Fetch jobs from backend
   const fetchJobs = async () => {
@@ -58,6 +74,14 @@ export default function Dashboard() {
     openModal();
   };
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filterStatus]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
+
   return (
     <div className="p-6 max-w-4xl mx-auto">
       {/* Top Bar */}
@@ -89,8 +113,67 @@ export default function Dashboard() {
         </button>
       </div>
 
-      {/* Job List */}
-      <JobList jobs={jobs} onDelete={fetchJobs} onEdit={handleEdit} />
+      <div className="flex gap-2 mb-6">
+        {["all", "pending", "interview", "declined", "offer"].map((status) => (
+          <button
+            key={status}
+            onClick={() => setFilterStatus(status)}
+            className={`px-4 py-1 rounded-lg border ${filterStatus === status
+              ? "bg-blue-600 text-white"
+              : "bg-gray-100 text-gray-800"
+              }`}
+          >
+            {status.charAt(0).toUpperCase() + status.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      <JobList jobs={paginatedJobs} onDelete={fetchJobs} onEdit={handleEdit} />
+      <div className="flex justify-center items-center gap-2 mt-6">
+
+        {/* Previous button */}
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className={`px-3 py-1 rounded ${currentPage === 1
+            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+            : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+            }`}
+        >
+          ⬅️ Prev
+        </button>
+
+        {/* Page numbers */}
+        {[...Array(totalPages)].map((_, index) => {
+          const pageNum = index + 1;
+          return (
+            <button
+              key={pageNum}
+              onClick={() => setCurrentPage(pageNum)}
+              className={`px-3 py-1 rounded ${currentPage === pageNum
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                }`}
+            >
+              {pageNum}
+            </button>
+          );
+        })}
+
+        {/* Next button */}
+        <button
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          className={`px-3 py-1 rounded ${currentPage === totalPages
+            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+            : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+            }`}
+        >
+          Next ➡️
+        </button>
+
+      </div>
+
 
       {/* Create/Edit Job Modal */}
       <Modal isOpen={isModalOpen} onClose={closeModal} title={editingJob ? "Edit Job" : "Create Job"}>
