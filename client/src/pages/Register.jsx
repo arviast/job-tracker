@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -7,16 +7,40 @@ export default function Register() {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Registering:", formData);
-    // TODO: Send POST request to /api/auth/register
-  };
+
+    try {
+        const response = await fetch("http://localhost:5050/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Save user and token
+            // localStorage.setItem("token", data.token);
+            // localStorage.setItem("user", JSON.stringify(data.user));
+            // Navigate to dashboard
+            navigate("/login");
+        } else {
+        console.error("Registration failed:", data.error || data.msg);
+        // Optional: show toast or error message in UI
+        }
+    } catch (err) {
+        console.error("Error during registration:", err);
+    }
+    };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">

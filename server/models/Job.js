@@ -9,6 +9,10 @@ const JobSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide position"],
   },
+  location: {
+    type: String,
+    required: [true, "Please provide location"],
+  },
   status: {
     type: String,
     enum: ["pending", "interview", "declined"],
