@@ -33,7 +33,7 @@ export default function Dashboard() {
   // 🔄 Fetch jobs from backend
   const fetchJobs = async () => {
     try {
-      const res = await fetch(`${import.meta.env.BACKEND_URL}/api/jobs`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/jobs`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
