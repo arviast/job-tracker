@@ -33,7 +33,7 @@ export default function Dashboard() {
   // 🔄 Fetch jobs from backend
   const fetchJobs = async () => {
     try {
-      const res = await fetch("https://job-tracker-5wcn.onrender.com/api/jobs", {
+      const res = await fetch(`${import.meta.env.BACKEND_URL}/jobs`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

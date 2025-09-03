@@ -17,7 +17,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://job-tracker-5wcn.onrender.com/api/auth/login", {
+      const response = await fetch(`${import.meta.env.BACKEND_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
