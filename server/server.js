@@ -15,7 +15,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://job-tracker-ka1hbl64a-edwin-jamsranjavs-projects.vercel.app", // your frontend domain
+    origin: "https://job-tracker-mi2ekarla-edwin-jamsranjavs-projects.vercel.app", // your frontend domain
     credentials: true,
   })
 );
