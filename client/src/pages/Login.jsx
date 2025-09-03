@@ -44,8 +44,6 @@ export default function Login() {
     }
   };
 
-
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl">
@@ -92,7 +90,7 @@ export default function Login() {
 
         <div className="text-center mt-4">
           <span className="text-sm text-gray-600">Don’t have an account? </span>
-          <Link to="/" className="text-blue-600 font-semibold hover:underline">
+          <Link to="/register" className="text-blue-600 font-semibold hover:underline">
             Register
           </Link>
         </div>
