@@ -18,7 +18,7 @@ export default function Register() {
     console.log("Registering:", formData);
 
     try {
-      const response = await fetch("http://localhost:5050/api/auth/register", {
+      const response = await fetch("https://job-tracker-5wcn.onrender.com/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

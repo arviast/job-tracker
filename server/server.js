@@ -13,7 +13,12 @@ connectDB();
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5173" })); // Vite default port
+app.use(
+  cors({
+    origin: "https://job-tracker-ka1hbl64a-edwin-jamsranjavs-projects.vercel.app", // your frontend domain
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
