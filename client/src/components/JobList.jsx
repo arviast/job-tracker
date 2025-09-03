@@ -12,7 +12,7 @@ export default function JobList({ jobs, onDelete, onEdit }) {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch(`https://job-tracker-5wcn.onrender.com/api/jobs/${jobId}`, {
+      const res = await fetch(`${import.meta.env.BACKEND_URL}/jobs/${jobId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

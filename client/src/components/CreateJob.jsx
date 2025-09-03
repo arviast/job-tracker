@@ -24,7 +24,7 @@ export default function CreateJob({ onJobCreated, job }) {
       const isEditing = !!job;
 
       const response = await fetch(
-        `https://job-tracker-5wcn.onrender.com/api/jobs${isEditing ? `/${job._id}` : ""}`,
+        `${import.meta.env.BACKEND_URL}/jobs${isEditing ? `/${job._id}` : ""}`,
         {
           method: isEditing ? "PUT" : "POST",
           headers: {
