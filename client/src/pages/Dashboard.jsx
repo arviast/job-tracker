@@ -22,7 +22,7 @@ export default function Dashboard() {
       : jobs.filter((job) => job.status === filterStatus);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 10;
+  const jobsPerPage = 5;
 
   const startIndex = (currentPage - 1) * jobsPerPage;
   const endIndex = startIndex + jobsPerPage;
