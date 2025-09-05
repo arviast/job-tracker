@@ -8,7 +8,7 @@ import JobList from "../components/JobList";
 export default function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [jobs, setJobs] = useState([]);
-  const [editingJob, setEditingJob] = useState(null); // 🆕 for edit tracking
+  const [editingJob, setEditingJob] = useState(null);
 
   const [filterStatus, setFilterStatus] = useState("all");
 
@@ -75,12 +75,16 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
+    console.log(typeof totalPages, totalPages);
+    console.log(typeof currentPage, currentPage);
     setCurrentPage(1);
   }, [filterStatus]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+
   }, [currentPage]);
+
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -129,51 +133,51 @@ export default function Dashboard() {
       </div>
 
       <JobList jobs={paginatedJobs} onDelete={fetchJobs} onEdit={handleEdit} />
-      <div className="flex justify-center items-center gap-2 mt-6">
+      {totalPages > 0 && (
+        <div className="flex justify-center items-center gap-2 mt-6">
 
-        {/* Previous button */}
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className={`px-3 py-1 rounded ${currentPage === 1
-            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-            : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-            }`}
-        >
-          ⬅️ Prev
-        </button>
+          {/* Previous button */}
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className={`px-3 py-1 rounded ${currentPage === 1
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+              }`}
+          >
+            ⬅️ Prev
+          </button>
 
-        {/* Page numbers */}
-        {[...Array(totalPages)].map((_, index) => {
-          const pageNum = index + 1;
-          return (
-            <button
-              key={pageNum}
-              onClick={() => setCurrentPage(pageNum)}
-              className={`px-3 py-1 rounded ${currentPage === pageNum
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                }`}
-            >
-              {pageNum}
-            </button>
-          );
-        })}
+          {/* Page numbers */}
+          {[...Array(totalPages)].map((_, index) => {
+            const pageNum = index + 1;
+            return (
+              <button
+                key={pageNum}
+                onClick={() => setCurrentPage(pageNum)}
+                className={`px-3 py-1 rounded ${currentPage === pageNum
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                  }`}
+              >
+                {pageNum}
+              </button>
+            );
+          })}
 
-        {/* Next button */}
-        <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}
-          className={`px-3 py-1 rounded ${currentPage === totalPages
-            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-            : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-            }`}
-        >
-          Next ➡️
-        </button>
-
-      </div>
-
+          {/* Next button */}
+          <button
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className={`px-3 py-1 rounded ${currentPage === totalPages
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+              }`}
+          >
+            Next ➡️
+          </button>
+        </div>
+      )}
 
       {/* Create/Edit Job Modal */}
       <Modal isOpen={isModalOpen} onClose={closeModal} title={editingJob ? "Edit Job" : "Create Job"}>
