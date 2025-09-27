@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const sendEmail = require("../utils/sendEmail");
 
 // 2. Register function
 const register = async (req, res) => {
@@ -82,6 +83,33 @@ const forgotPassword = async (req, res) => {
     user.passwordResetTokenExpiry = Date.now() + 1000 * 60 * 10; // 10 minutes
 
     await user.save({ validateBeforeSave: false });
+
+    const resetUrl = `${process.env.FRONTEND_URL || "http://localhost:5173"}/reset-password?token=${resetToken}`;
+
+    const message = {
+      to: email,
+      subject: "Reset your Job Tracker password",
+      text: `Reset your password using the following link: ${resetUrl}`,
+      html: `
+        <p>We received a request to reset the password for your Job Tracker account.</p>
+        <p>
+          <a href="${resetUrl}" target="_blank" rel="noopener noreferrer">
+            Click here to reset your password
+          </a>
+        </p>
+        <p>This link expires in 10 minutes. If you did not request this, you can safely ignore this email.</p>
+      `,
+    };
+
+    try {
+      await sendEmail(message);
+    } catch (emailError) {
+      user.passwordResetToken = undefined;
+      user.passwordResetTokenExpiry = undefined;
+      await user.save({ validateBeforeSave: false });
+
+      throw emailError;
+    }
 
     if (process.env.NODE_ENV !== "production") {
       console.log(
