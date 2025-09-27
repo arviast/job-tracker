@@ -80,6 +80,8 @@ export default function Login() {
             />
           </div>
 
+          
+
           <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition"
@@ -94,6 +96,15 @@ export default function Login() {
             Register
           </Link>
         </div>
+
+        <div className="text-center mt-4">
+            <Link
+              to="/forgot-password"
+              className="text-sm text-blue-600 font-semibold hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
       </div>
     </div>
   );
