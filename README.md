@@ -9,7 +9,7 @@ A full-stack web application that helps users track job applications, statuses, 
   - API URL: https://job-tracker-api.onrender.com  
 
 ## 🛠️ Tech Stack
-- **Frontend:** React, Vite (or Next.js if you used it), TailwindCSS  
+- **Frontend:** React, Vite, TailwindCSS  
 - **Backend:** Node.js, Express.js, MongoDB  
 - **Hosting:** Render (API), Vercel (Frontend)
 
